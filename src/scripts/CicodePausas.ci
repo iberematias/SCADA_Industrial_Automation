@@ -1,0 +1,24 @@
+//INT numero_ciclo;
+FUNCTION inserir_Parada(STRING descricao)
+	STRING aux ""
+	STRING datahora = Date();
+	STRING usuario = Name();
+	datahora = datahora +" "+ Time(1);
+	INT hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+	STRING sql = "insert into parada (numero_ciclo,usuario,datahora,descricao) values("+
+				IntToStr(numero_ciclo)+",'"+usuario+"','"+datahora+"','"+descricao+"')";
+	Status = SQLExec(hSQL, sql);
+	IF Status = 0 THEN
+		SQLEnd(hSQL);
+	ELSE
+		Message("Erro: ", SQLErrMsg(), 48);
+	END
+	SQLDisconnect(hSQL);
+END
+INT FUNCTION valida_descricao()  
+	INT flag = 1;
+	IF StrLength(descricao_pausa)>3 THEN
+		flag = 0;
+	END
+	RETURN flag
+END

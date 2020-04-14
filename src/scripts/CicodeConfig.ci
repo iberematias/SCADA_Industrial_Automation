@@ -1,0 +1,36 @@
+INT Status;
+STRING ssql;
+FUNCTION consultar_Conf()
+	STRING aux ""
+	INT	hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+	Status = SQLExec(hSQL, "select * from configura_sis");
+	IF Status = 0 THEN
+		WHILE SQLNext(hSQL) = 0 DO
+			export_path_bd = SQLGetField(hSQL,"path");
+		END
+		SQLEnd(hSQL);
+	ELSE
+		Message("Erro: ", SQLErrMsg(), 48);
+	END
+	SQLDisconnect(hSQL);
+	RETURN;
+END
+
+FUNCTION salvar_Conf()
+	INT	hSQL
+	IF (StrLength(export_path_bd)>2) THEN
+		hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+		Status = SQLExec(hSQL, "update configura_sis set path='" + export_path_bd + "'");
+		IF Status = 0 THEN
+			SQLEnd(hSQL);
+			Message("OK", "Salvo com sucesso!: " , 64);
+		ELSE
+			Message("Erro: ", SQLErrMsg(), 48);
+		END
+		SQLDisconnect(hSQL);
+	ELSE 
+		Message("OK", "Caminho inválido: " + export_path_bd , 64);
+	END
+	RETURN;
+END
+

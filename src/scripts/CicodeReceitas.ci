@@ -1,0 +1,258 @@
+// Base de dados
+INT cont = 0;	
+INT Status;
+STRING ssql;
+
+FUNCTION consuta (STRING fcodigo,INT hSQL)
+	INT fint_aux;
+	INT fint_aux_codigo;
+	STRING fstr_aux;
+	fArray[0] = "";fArray[1] = "";fArray[2] = "";fArray[3] = "";fArray[4] = "";fArray[5] = "";fArray[6] = "";
+	IF(StrLength(fcodigo)>5) THEN
+		fint_aux = StrSearch(1, fcodigo, "G");
+		fArray[3] = StrRight(fcodigo,StrLength(fcodigo)-fint_aux) ;
+		fArray[4] = StrMid(fcodigo,fint_aux+4,2);
+		fstr_aux = StrLeft(fcodigo, fint_aux);
+		fint_aux_codigo = StrToInt(fstr_aux);
+		IF fint_aux_codigo>30000000 THEN
+			fArray[5] = fstr_aux;
+			Status = SQLExec(hSQL, "SELECT * FROM produto where codigo="+fstr_aux);
+			IF Status = 0 THEN
+				WHILE SQLNext(hSQL) = 0 DO
+					fArray[0] = SQLGetField(hSQL, "descricao");
+					fArray[1] = SQLGetField(hSQL, "grao");
+					fArray[2] = SQLGetField(hSQL, "pressao");
+					fArray[6] = SQLGetField(hSQL,"tolerancia");
+					cont = cont + 1;
+				END
+				SQLEnd(hSQL);
+			ELSE
+				Message("Error 2 ", SQLErrMsg(), 48);
+			END
+		END
+	END				
+END
+STRING FUNCTION consutar_receita()
+	Status = 1;
+	INT	hSQL;
+	STRING str_aux;
+	hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+	IF hSQL <> -1 THEN
+		// Consulta Jumbo 1
+		desc_jb1 = "";grana_jb1 = "";rpressao_jb1 = 0.0;numero_jb1 = "0";serie_jb1 = "";codigoProduto_jb1 = "0";
+		consuta(codigo_jb1,hSQL);
+		IF(Status=0) THEN
+			desc_jb1 = fArray[0];
+			grana_jb1 = fArray[1];
+			rpressao_jb1 = fArray[2];
+			JUMBO_01_SETPOINT=fArray[2];
+			numero_jb1 = fArray[3];
+			serie_jb1 = fArray[4];
+			codigoProduto_jb1 = fArray[5];			
+			Status = 1;
+			tolera_jb1 = fArray[6];
+		END
+		// Consulta Jumbo 2
+		desc_jb2 = "";grana_jb2 = "";rpressao_jb2 = 0.0;numero_jb2 = "0";serie_jb2 = "";codigoProduto_jb2 = "0";
+		consuta(codigo_jb2,hSQL);
+		IF(Status=0) THEN
+			desc_jb2 = fArray[0];
+			grana_jb2 = fArray[1];
+			rpressao_jb2 = fArray[2];
+			JUMBO_02_SETPOINT=fArray[2];
+			numero_jb2 = fArray[3];
+			serie_jb2 = fArray[4];
+			codigoProduto_jb2 = fArray[5];
+			Status = 1;
+			tolera_jb2 = fArray[6];
+		END
+		// Consulta Jumbo 3				
+		desc_jb3 = "";grana_jb3 = "";rpressao_jb3 = 0.0;numero_jb3 = "0";serie_jb3 = "";codigoProduto_jb3 = "0";		
+		consuta(codigo_jb3,hSQL);
+		IF(Status=0) THEN
+			desc_jb3 = fArray[0];
+			grana_jb3 = fArray[1];
+			rpressao_jb3 = fArray[2];
+			JUMBO_03_SETPOINT=fArray[2];
+			numero_jb3 = fArray[3];
+			serie_jb3 = fArray[4];			
+			codigoProduto_jb3 = fArray[5];		
+			Status = 1;
+			tolera_jb3 = fArray[6];
+		END
+		// Consulta Jumbo 4
+		desc_jb4 = "";grana_jb4 = "";rpressao_jb4 = 0.0;numero_jb4 = "0";serie_jb4 = "";codigoProduto_jb4 = "0";
+		consuta(codigo_jb4,hSQL);
+		IF(Status=0) THEN
+			desc_jb4 = fArray[0];
+			grana_jb4 = fArray[1];
+			rpressao_jb4 = fArray[2];
+			JUMBO_04_SETPOINT=fArray[2];
+			numero_jb4 = fArray[3];
+			serie_jb4 = fArray[4];
+			codigoProduto_jb4 = fArray[5];			
+			Status = 1;
+			tolera_jb4 = fArray[6];
+		END
+		// Consulta Jumbo 5
+		desc_jb5 = "";grana_jb5 = "";rpressao_jb5 = 0.0;numero_jb5 = "0";serie_jb5 = "";codigoProduto_jb5 = "0";
+		consuta(codigo_jb5,hSQL);
+		IF(Status=0) THEN
+			desc_jb5 = fArray[0];
+			grana_jb5 = fArray[1];
+			rpressao_jb5 = fArray[2];
+			JUMBO_05_SETPOINT=fArray[2];
+			numero_jb5 = fArray[3];
+			serie_jb5 = fArray[4];
+			codigoProduto_jb5 = fArray[5];
+			Status = 1;
+			tolera_jb5 = fArray[6];
+		END
+		// Consulta Jumbo 6
+		desc_jb6 = "";grana_jb6 = "";rpressao_jb6 = 0.0;numero_jb6 = "0";serie_jb6 = "";codigoProduto_jb6 = "0";		
+		consuta(codigo_jb6,hSQL);
+		IF(Status=0) THEN
+			desc_jb6 = fArray[0];
+			grana_jb6 = fArray[1];
+			rpressao_jb6 = fArray[2];
+			JUMBO_06_SETPOINT=fArray[2];
+			numero_jb6 = fArray[3];
+			serie_jb6 = fArray[4];			
+			codigoProduto_jb6 = fArray[5];		
+			Status = 1;
+			tolera_jb6 = fArray[6];
+		END
+		// Consulta Jumbo 7
+		desc_jb7 = "";grana_jb7 = "";rpressao_jb7 = 0.0;numero_jb7 = "0";serie_jb7 = "";codigoProduto_jb7 = "0";		
+		consuta(codigo_jb7,hSQL);
+		IF(Status=0) THEN
+			desc_jb7 = fArray[0];
+			grana_jb7 = fArray[1];
+			rpressao_jb7 = fArray[2];
+			JUMBO_07_SETPOINT=fArray[2];
+			numero_jb7 = fArray[3];
+			serie_jb7 = fArray[4];			
+			codigoProduto_jb7 = fArray[5];		
+			Status = 1;
+			tolera_jb7 = fArray[6];
+		END
+		// Consulta Jumbo 8
+		desc_jb8 = "";grana_jb8 = "";rpressao_jb8 = 0.0;numero_jb8 = "0";serie_jb8 = "";codigoProduto_jb8 = "0";		
+		consuta(codigo_jb8,hSQL);
+		IF(Status=0) THEN
+			desc_jb8 = fArray[0];
+			grana_jb8 = fArray[1];
+			rpressao_jb8 = fArray[2];
+			JUMBO_08_SETPOINT=fArray[2];
+			numero_jb8 = fArray[3];
+			serie_jb8 = fArray[4];			
+			codigoProduto_jb8 = fArray[5];		
+			Status = 1;
+			tolera_jb8 = fArray[6];
+		END
+		SQLDisconnect(hSQL); 
+		str_aux = cont;
+		//Message("Aviso", str_aux+" Produtos Encontrados", 64);
+		cont = 0;
+	END
+	RETURN str_aux;
+END
+//#####################################################
+FUNCTION salvar_receita()
+	INT	hSQL; 
+	INT int_aux;
+	INT cont = 0;
+	INT Status;
+	INT fint_aux;
+	STRING fstr_aux;
+	//long posPonto;
+	STRING ssql;
+	STRING pressao;
+	pressaoBR = "";
+	hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+	IF hSQL <> -1 THEN
+		// Salvar Jumbo 1
+		int_aux = StrToInt(codigo_jb1);
+		IF int_aux > 30000000 THEN
+			fint_aux = StrSearch(1, codigo_jb1, "G");
+			fstr_aux = StrLeft(codigo_jb1, fint_aux);
+			pressaoBR = RealToStr(rpressao_jb1,6,2);
+			int_aux = StrSearch(0, pressaoBR, ",");
+			pressao = StrLeft(pressaoBR, int_aux); 
+			pressao = pressao+"."+ StrRight(pressaoBR, 2 );
+			ssql = "UPDATE produto set pressao='"+pressao+"' where codigo='"+fstr_aux+"'";
+			Status = SQLExec(hSQL, ssql);
+			Message("SQL Update ", ssql, 48);
+			IF Status = 0 THEN
+				SQLEnd(hSQL);
+				cont = cont + 1;
+			ELSE
+				Message("Error Up "+ fstr_aux, SQLErrMsg(), 48);
+			END
+		END
+	END
+	SQLDisconnect(hSQL);
+END
+STRING FUNCTION RealBr_to_RealEN(REAL valor)
+	STRING	aux = RealToStr(valor,6,2);
+	INT	int_aux = StrSearch(0, aux, ",");
+	STRING swap = StrLeft(aux, int_aux); 
+	swap = swap+"."+ StrRight(aux, 2 );
+	RETURN swap;
+END
+FUNCTION salvar_configuracao_ciclo()
+	INT	hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+	INT cont = 0;
+	STRING ssql;
+	spatamar1 = REALBr_to_RealEN(patamar1);
+	spatamar2 = RealBr_to_RealEN(patamar2);
+	spatamar3 = RealBr_to_RealEN(patamar3);
+	spatamar4 = RealBr_to_RealEN(patamar4);
+	spatamar5 = RealBr_to_RealEN(patamar5);
+	spatamar6 = RealBr_to_RealEN(patamar6);
+	spatamar7 = RealBr_to_RealEN(patamar7);
+	stolera_patamar1 = RealBr_to_RealEN(patamar1);
+	stolera_patamar6 = RealBr_to_RealEN(patamar6);
+	stempo_umidificacao = RealBr_to_RealEN(tempo_umidificacao);
+	stempo_resfriamento = RealBr_to_RealEN(tempo_resfriamento);
+	stemp_bulboumido = RealBr_to_RealEN(temp_bulboumido);
+	IF hSQL <> -1 THEN
+		ssql = "UPDATE configura_ciclo set patamar1='"+spatamar1+"', patamar2='"+spatamar2+"', patamar3='"+spatamar3+
+		"', patamar4='"+spatamar4+"', patamar5='"+spatamar5+"', patamar6='"+spatamar6+"', patamar7='"+spatamar7+
+		", tolera_patamar1='"+stolera_patamar1+"', tolera_patamar6='"+stolera_patamar6+"', tempo_resfriamento='"+stolera_patamar1+"'";
+		//", tempo_umidificacao="+stolera_patamar1+", temp_bulboumido="+stemp_bulboumido + " where id=1";
+		Status = SQLExec(hSQL, ssql);
+		Message("SQLUp", ssql, 48);
+		IF Status = 0 THEN
+			SQLEnd(hSQL);
+			cont = cont + 1;
+		ELSE
+			Message("Error Update "+ codigo_jb1, SQLErrMsg(), 48);
+		END
+	END
+	SQLDisconnect(hSQL);
+END
+FUNCTION carrega_configuracao_ciclo()
+	INT	hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+	Status = SQLExec(hSQL, "SELECT * FROM configura_ciclo");
+	IF Status = 0 THEN
+		WHILE SQLNext(hSQL) = 0 DO
+			patamar1 = SQLGetField(hSQL, "patamar1");
+			patamar2 = SQLGetField(hSQL, "patamar2");
+			patamar3 = SQLGetField(hSQL, "patamar3");
+			patamar4 = SQLGetField(hSQL, "patamar4");
+			patamar5 = SQLGetField(hSQL, "patamar5");
+			patamar6 = SQLGetField(hSQL, "patamar6");
+			patamar7 = SQLGetField(hSQL, "patamar7");
+			tolera_patamar1 = SQLGetField(hSQL, "tolera_patamar1");
+			tolera_patamar6 = SQLGetField(hSQL, "tolera_patamar6");
+			tempo_resfriamento = SQLGetField(hSQL, "tempo_resfriamento");
+			tempo_umidificacao = SQLGetField(hSQL, "tempo_umidificacao");
+			temp_bulboumido = SQLGetField(hSQL, "temp_bulboumido");
+		END
+		SQLEnd(hSQL);
+	ELSE
+		Message("! ", SQLErrMsg(), 48);
+	END
+	SQLDisconnect(hSQL);
+END

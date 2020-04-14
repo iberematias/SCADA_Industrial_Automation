@@ -1,0 +1,63 @@
+FUNCTION PopupTMenu()
+	INT iTMenuSelection;
+	//Dim strDayOfWeek As STRING;
+	DspPopupMenu(0, "Gráfico Pressão JB 01 e 02,Gráfico Rastreabilidade,Gráfico Pressão JB 05 e 06,Gráfico  JB 4,Gráfico  JB 5,Gráfico  JB 6,Gráfico  JB 7,Gráfico  JB 8");
+	//DspPopupMenu(0, "Grafico LA,Item B>1,Item C");
+	//DspPopupMenu(1, "Item B1,,[Trend]Item B2,,Item B3");
+	iTMenuSelection = DspPopupMenu();
+	IF iTMenuSelection = 1 THEN
+			PageDisplay("TTrend_jb12");
+	END
+	IF iTMenuSelection = 2 THEN
+			PageDisplay("TTrend_jb34"); 
+	END
+	IF iTMenuSelection = 3 THEN
+			PageDisplay("TTrend_teste_xp"); 
+	END
+END
+STRING FUNCTION get_nPat()
+	npat = "00";
+	IF (HAB_CICLO=1) AND (PAT_OK_01=0) AND (PAT_OK_02=0) AND (PAT_OK_03=0) AND (PAT_OK_04=0) AND (PAT_OK_05=0) AND (PAT_OK_06=0) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "01";
+		tpat = CV_PATAMAR_01 - TP_PATAMAR_01;
+	END
+	IF (PAT_OK_01=1) AND (PAT_OK_02=0) AND (PAT_OK_03=0) AND (PAT_OK_04=0) AND (PAT_OK_05=0) AND (PAT_OK_06=0) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "02";
+		tpat = CV_PATAMAR_02 - TP_PATAMAR_02;
+	END
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=0) AND (PAT_OK_04=0) AND (PAT_OK_05=0) AND (PAT_OK_06=0) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "03";
+		tpat = CV_PATAMAR_03 - TP_PATAMAR_03;		
+	END
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=1) AND (PAT_OK_04=0) AND (PAT_OK_05=0) AND (PAT_OK_06=0) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "04";
+		tpat = CV_PATAMAR_04 - TP_PATAMAR_04;		
+	END
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=1) AND (PAT_OK_04=1) AND (PAT_OK_05=0) AND (PAT_OK_06=0) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "05";
+		tpat = CV_PATAMAR_05 - TP_PATAMAR_05;				
+	END
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=1) AND (PAT_OK_04=1) AND (PAT_OK_05=1) AND (PAT_OK_06=0) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "06";
+		tpat = CV_PATAMAR_06 - TP_PATAMAR_06;				
+	END
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=1) AND (PAT_OK_04=1) AND (PAT_OK_05=1) AND (PAT_OK_06=1) AND (PAT_OK_07=0) AND (PAT_OK_08=0) THEN
+		npat = "07";
+		tpat = CV_PATAMAR_07 - TP_PATAMAR_07;				
+	END	
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=1) AND (PAT_OK_04=1) AND (PAT_OK_05=1) AND (PAT_OK_06=1) AND (PAT_OK_07=1) AND (PAT_OK_08=0) THEN
+		npat = "08";
+		tpat = CV_PATAMAR_08 - TP_PATAMAR_08;				
+	END	
+	IF (PAT_OK_01=1) AND (PAT_OK_02=1) AND (PAT_OK_03=1) AND (PAT_OK_04=1) AND (PAT_OK_05=1) AND (PAT_OK_06=1) AND (PAT_OK_07=1) AND (PAT_OK_08=1) THEN
+		npat = "Concluido";
+	END		
+	RETURN ("Patamar "+npat);
+END
+INT FUNCTION valida_usuario()  
+	INT flag = 1;
+	IF GetPriv(4,0) THEN
+		flag = 0;
+	END
+	RETURN flag;
+END

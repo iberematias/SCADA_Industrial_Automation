@@ -1,0 +1,126 @@
+INT Status;
+STRING FUNCTION get_DataCura(STRING codigoBarras)
+	INT i = 0;
+	INT nJumbo = 0;
+	INT hSQL;
+	STRING ssql;
+	INT fint_aux;
+	IF StrLength(codigoBarras)>5 THEN
+		arrayResult[0] = "";
+		arrayResult[1] = "";
+		arrayResult[2] = "";
+		arrayResult[3] = "";
+		arrayResult[6] = "";
+		
+		fint_aux = StrSearch(1, codigoBarras, "G");
+		numero_jb = StrRight(codigoBarras,StrLength(codigoBarras)-fint_aux) ;
+		arrayResult[0] = "Registro Não Encontrado";
+		hSQL = SQLConnect("DSN=SS_SGACURA;SRVR=why");
+		ssql = "SELECT * from ciclo where numero_r1='"+numero_jb+"' or numero_r2='"+numero_jb+"' or numero_r3='"+
+		numero_jb+"' or numero_r4='"+numero_jb+"' or numero_r5='"+numero_jb+"' or numero_r6='"+numero_jb+"' or numero_r7='"+numero_jb+
+		"' or numero_r8='"+numero_jb+"'";
+		Status = SQLExec(hSQL, ssql);
+		
+		IF Status = 0 THEN
+			WHILE SQLNext(hSQL) = 0 DO
+				arrayResult[0] = SQLGetField(hSQL, "id");
+				arrayResult[1] = SQLGetField(hSQL, "datahora");
+				fint_aux = StrSearch(1, arrayResult[1], " ");
+				arrayResult[2] = StrRight(arrayResult[1],StrLength(arrayResult[1])-fint_aux) ;
+				arrayResult[3] = StrLeft(arrayResult[1], fint_aux);
+				arrayResult[6] = SQLGetField(hSQL, "tempo");
+				tempo_ciclo_bd = StrToInt(arrayResult[6]);
+				calc_tempo = StrToInt(arrayResult[6]) * 60;
+				fArray[0] = SQLGetField(hSQL, "numero_r1");
+				fArray[1] = SQLGetField(hSQL, "numero_r2");
+				fArray[2] = SQLGetField(hSQL, "numero_r3");
+				fArray[3] = SQLGetField(hSQL, "numero_r4");			
+				fArray[4] = SQLGetField(hSQL, "numero_r5");
+				fArray[5] = SQLGetField(hSQL, "numero_r6");
+				fArray[6] = SQLGetField(hSQL, "numero_r7");
+				fArray[7] = SQLGetField(hSQL, "numero_r8");
+				fArrayP[0] = SQLGetField(hSQL, "produto_1");
+				fArrayP[1] = SQLGetField(hSQL, "produto_2");
+				fArrayP[2] = SQLGetField(hSQL, "produto_3");
+				fArrayP[3] = SQLGetField(hSQL, "produto_4");
+				fArrayP[4] = SQLGetField(hSQL, "produto_5");
+				fArrayP[5] = SQLGetField(hSQL, "produto_6");
+				fArrayP[6] = SQLGetField(hSQL, "produto_7");			
+				fArrayP[7] = SQLGetField(hSQL, "produto_8");
+			END
+			//While para verificar qual jumbo 1,2,3,4,5,6,7 ou 8.
+			WHILE i < 8 DO
+				IF fArray[i] = numero_jb THEN
+					nJumbo = i+1;
+					arrayResult[4] = fArrayP[i];
+				END
+				i  = i+1; 
+			END
+			IF nJumbo <> 0 THEN
+				Status = SQLExec(hSQL,"select * from produto where codigo="+arrayResult[4]);
+				IF Status = 0 THEN
+					WHILE SQLNext(hSQL) = 0 DO
+						arrayResult[5] = SQLGetField(hSQL, "descricao");
+					END
+				END
+			END
+			SQLEnd(hSQL);
+		ELSE
+			Message("! ", SQLErrMsg(), 48);
+		END
+		SQLDisconnect(hSQL);
+		
+		IF nJumbo<>0 THEN
+			nomePena = IntToStr(nJumbo);
+			//Periodo config. para 2 horas (8 intervalos de 15 min) .
+			TrnSetPeriod(250,(tempo_ciclo_bd/900));	
+			TrnSetPen(250, 1, "T_TEMP_SETPOINT"); 
+			TrnSetPen(250, 2, "T_TEMP_PRESSAO");		
+			TrnSetPen(250, 3, "T_JUMBO_0"+nomePena +"_TEMP_ENTRADA");
+			TrnSetPen(250, 4, "T_JUMBO_0"+nomePena +"_TEMP_SAIDA");
+			TrnSetPen(250, 5, "T_JUMBO_0"+nomePena +"_PRESSAO");
+			TrnSetPen(250, 6, "T_JUMBO_0"+nomePena +"_VALVULA");
+			//TrnSetPen(250, 7, "T_UMID_ESTUFA");		
+			//TrnSetTime(250, -1,StrToDate(arrayResult[3]) + StrToTime(arrayResult[2]) ); 
+			//Tempo do Trend config. para 2 horas (7200 segndos) 18000 seg = 5horas.
+			//TrnSetTime(250, -1,DateAdd(StrToDate(arrayResult[3]) + StrToTime(arrayResult[2]), 18000) ); 
+			TrnSetTime(250, -1,DateAdd(StrToDate(arrayResult[3]) + StrToTime(arrayResult[2]), calc_tempo) ); 
+	
+		END
+		//array[0] = Numero do Cilco  //array[1] = Data hora //array[2] = data //array[3] = hora 
+		//array[4] = Código do Produto //array[5] = Descrição do Produto
+	ELSE 
+		Message("OK", "Código Inválido!", 64);
+	END
+
+	RETURN arrayResult[0];
+END
+
+FUNCTION Data_Export()
+	consultar_Conf();
+	STRING aux1 = "T_JUMBO_0";
+	INT flag = 1;
+	STRING pena1 = "T_TEMP_SETPOINT";
+	STRING pena2 = "T_TEMP_PRESSAO";
+	STRING pena3 = aux1 + nomePena + "_TEMP_ENTRADA"; 
+	STRING pena4 = aux1 + nomePena + "_TEMP_SAIDA";	
+	STRING pena5 = aux1 + nomePena + "_PRESSAO"; 
+	STRING pena6 = aux1 + nomePena + "_VALVULA"; 
+
+	INT qtdeLinhas = tempo_ciclo_bd;
+
+	aux1 = export_path_bd + numero_jb + "_" + ".csv";
+	//saux = arrayResult[3];
+	IF (StrLength(export_path_bd)>2) AND (StrLength(numero_jb)>5) THEN
+		flag = TrnExportCSV(aux1, DateAdd(StrToDate(arrayResult[3]) + StrToTime(arrayResult[2]), calc_tempo), 60, qtdeLinhas, 1,pena1,pena2,pena3,pena4,pena5,pena6); 
+		IF flag = 0 THEN
+			Message("OK", "Dados exportados para: "+export_path_bd, 64);
+		ELSE
+			Message("OK", "Erro ao exportar!", 64);
+
+		END
+	ELSE 
+		Message("OK", "Export: Caminho inválido: "+export_path_bd, 64);
+	END
+END
+
