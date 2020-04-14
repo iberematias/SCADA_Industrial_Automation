@@ -1,4 +1,4 @@
-# Sistemas de Supervisão e Aquisição de Dados (SCADA), Estufa de Cura.  
+# Sistemas de Supervisão e Aquisição de Dados (SCADA) <br /> Estufa de Cura.  
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/logo.png)
 
 Sistema supervisório para gerenciamento dos processos de cura dos produtos dentro da estufa.
