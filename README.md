@@ -4,7 +4,7 @@
 Sistema supervisório para gerenciamento dos processos de cura dos produtos dentro da estufa.
 
 
-Este software contém as telas e scripts para:
+Por questões de sigigo industrial, este repositório contém apenas as telas e scripts para:
  1. Inicia os ciclos dos processos;
  2. Configura os controles PID e set-points do processo; 
  3. Registra as variáveis de processo: Produto, Temperatura, Umidade, Tempos de Ciclo e Milímetros de Coluna de Água;
