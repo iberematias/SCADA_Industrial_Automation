@@ -1,21 +1,20 @@
-# Sistemas de Supervisão e Aquisição de Dados (SCADA) <br /> Estufa de Cura.  
+# Supervision and Data Acquisition Systems (SCADA) <br /> Curing Oven.  
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/logo.png)
 
-Sistema supervisório para gerenciamento dos processos de cura dos produtos dentro da estufa.
+Supervisory system for managing product curing processes..
 
 
-Por questões de sigigo industrial, este repositório contém apenas as telas e scripts para:
- 1. Inicia os ciclos dos processos;
- 2. Configura os controles PID e set-points do processo; 
- 3. Registra as variáveis de processo: Produto, Temperatura, Umidade, Tempos de Ciclo e Milímetros de Coluna de Água;
- 4. Monitora os status dos motores e sensores; 
- 5. Rastrea por código de barras os dados registrados de processo;
- 6. Monitora os ciclos de cura;
- 7. Cadastro e envio de receitas;
-
-
+For security reasons, this repository only contains the screens:
+ 1. Starts process cycles;
+ 2. Configures the PID controls and set-points of the process;
+ 3. Records the process variables: Product, Temperature, Humidity, Cycle Times and Millimeters of Water Column;
+ 4. Monitors the status of motors and sensors;
+ 5. Tracks the recorded process data by bar code;
+ 6. Monitors healing cycles;
+ 7. Registration and sending of prescriptions;
+ 
 *******
-Tecnologias    
+Software used    
  1. CitectSCADA 7.2
  2. SQL Server 2005 Express Edition; 
  3. Unity Pro 4.0;
@@ -25,7 +24,7 @@ Tecnologias
 
 <div id='tela1'/>  
 
-## Telas do Projeto: Estufa  
+## Screen: curing oven  
 
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/1-estufa.png)
 
@@ -33,7 +32,7 @@ Tecnologias
 
 <div id='tela2'/>  
 
-## Telas do Projeto: Relatório Gráfico de Tendêcias   
+## Telas: Relatório Gráfico de Tendêcias   
 
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/2-report.png)
 
@@ -41,7 +40,7 @@ Tecnologias
 
 <div id='tela3'/>  
 
-## Telas do Projeto: Parâmetros e Status do Ciclo   
+## Screens: Graphic Trend Report   
 
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/3-cicle.png)
 
@@ -49,7 +48,7 @@ Tecnologias
 
 <div id='tela4'/>  
 
-## Telas do Projeto: Receitas   
+## Screens: Recipe    
 
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/4-recipes.png)
 
@@ -57,7 +56,7 @@ Tecnologias
 
 <div id='tela5'/>  
 
-## Telas do Projeto: Parametrização dos PIDs   
+## Screens: PID parameterization   
 
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/5-pid.png)
 
@@ -65,7 +64,7 @@ Tecnologias
 
 <div id='tela6'/>  
 
-## Telas do Projeto: Alarmes   
+## Screens: Alarms   
 
 ![](https://github.com/iberematias/Citect-Estufa/blob/master/src/img/6-alarms.png)
 
